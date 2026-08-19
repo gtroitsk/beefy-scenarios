@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 17 ]
+        java: [ 21 ]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/cache@v6
@@ -48,7 +48,7 @@ jobs:
     needs: quarkus-main-build
     strategy:
       matrix:
-        java: [ 17 ]
+        java: [ 21 ]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/cache@v6
@@ -91,7 +91,7 @@ jobs:
     needs: quarkus-main-build
     strategy:
       matrix:
-        java: [ 17 ]
+        java: [ 21 ]
         image: [ "ubi-quarkus-mandrel-builder-image:jdk-25"]
     steps:
       - uses: actions/checkout@v7
@@ -153,7 +153,7 @@ jobs:
     needs: quarkus-main-build
     strategy:
       matrix:
-        java: [ 17 ]
+        java: [ 21 ]
         graalvm-version: ["mandrel-latest"]
         graalvm-java-version: [ "25" ]
     steps:
