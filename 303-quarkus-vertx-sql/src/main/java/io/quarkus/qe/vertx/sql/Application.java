@@ -4,7 +4,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.qe.vertx.sql.services.DbPoolService;
