@@ -13,7 +13,7 @@ import io.quarkus.qe.vertx.web.model.Record;
 import io.quarkus.redis.client.reactive.ReactiveRedisClient;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.redis.client.Response;
+import io.vertx.redis.client.Response;
 
 import jakarta.inject.Inject;
 

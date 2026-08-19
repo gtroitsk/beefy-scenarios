@@ -21,18 +21,16 @@ import io.quarkus.qe.vertx.sql.test.resources.PostgresqlTestProfile;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.mutiny.core.Vertx;
-import io.vertx.mutiny.ext.web.client.HttpResponse;
 import io.vertx.mutiny.ext.web.client.WebClient;
-import io.vertx.mutiny.ext.web.client.predicate.ResponsePredicate;
-import io.vertx.mutiny.pgclient.PgPool;
+import io.vertx.mutiny.sqlclient.Pool;
 import io.vertx.mutiny.sqlclient.RowSet;
 
 import jakarta.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @QuarkusTest
 @TestProfile(PostgresqlTestProfile.class)
@@ -46,7 +44,7 @@ public class PostgresPoolTest extends AbstractCommons {
     static WebClient httpClient;
 
     @Inject
-    PgPool postgresql;
+    Pool postgresql;
 
     @ConfigProperty(name = "quarkus.http.test.port")
     int port;
@@ -136,8 +134,13 @@ public class PostgresPoolTest extends AbstractCommons {
 
     protected Uni<JsonArray> makeHttpReq(WebClient httpClient, String path, int expectedStatus) {
         return httpClient.getAbs(getAppEndpoint() + path)
-                .expect(ResponsePredicate.status(expectedStatus))
-                .send().map(HttpResponse::bodyAsJsonArray);
+                .send()
+                .onItem().transform(resp -> {
+                    if (resp.statusCode() != expectedStatus) {
+                        throw new RuntimeException("Unexpected HTTP status: " + resp.statusCode());
+                    }
+                    return resp.bodyAsJsonArray();
+                });
     }
 
     protected String getAppEndpoint() {

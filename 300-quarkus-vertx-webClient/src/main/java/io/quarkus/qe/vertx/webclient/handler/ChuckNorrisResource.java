@@ -17,9 +17,7 @@ import io.quarkus.vertx.web.Route;
 import io.quarkus.vertx.web.RouteBase;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
-import io.vertx.mutiny.ext.web.client.HttpResponse;
 import io.vertx.mutiny.ext.web.client.WebClient;
-import io.vertx.mutiny.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.mutiny.ext.web.codec.BodyCodec;
 
 import jakarta.annotation.PostConstruct;
@@ -56,9 +54,13 @@ public class ChuckNorrisResource {
         return client.getAbs(chuckNorrisQuote.getValue())
                 .as(BodyCodec.json(Joke.class))
                 .putHeader("Accept", "application/json")
-                .expect(ResponsePredicate.status(HttpURLConnection.HTTP_OK))
                 .send()
-                .map(HttpResponse::body)
+                .onItem().transform(resp -> {
+                    if (resp.statusCode() != HttpURLConnection.HTTP_OK) {
+                        throw new RuntimeException("Unexpected HTTP status: " + resp.statusCode());
+                    }
+                    return resp.body();
+                })
                 .ifNoItem().after(Duration.ofSeconds(httpClientConf.timeout())).fail()
                 .onFailure().retry().atMost(httpClientConf.retries());
     }
@@ -82,8 +84,12 @@ public class ChuckNorrisResource {
     private Uni<Joke> getChuckQuoteAsJoke() {
         return client.getAbs(chuckNorrisQuote.getValue())
                 .putHeader("Accept", "application/json")
-                .expect(ResponsePredicate.status(HttpURLConnection.HTTP_OK))
                 .send()
-                .map(resp -> resp.bodyAsJsonObject().mapTo(Joke.class));
+                .onItem().transform(resp -> {
+                    if (resp.statusCode() != HttpURLConnection.HTTP_OK) {
+                        throw new RuntimeException("Unexpected HTTP status: " + resp.statusCode());
+                    }
+                    return resp.bodyAsJsonObject().mapTo(Joke.class);
+                });
     }
 }

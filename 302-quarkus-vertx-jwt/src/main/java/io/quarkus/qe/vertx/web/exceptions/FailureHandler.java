@@ -12,7 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class FailureHandler {
 
     public void handler(final RoutingContext ctx) {
-        JsonObject error = defaultError(ctx.normalisedPath());
+        JsonObject error = defaultError(ctx.normalizedPath());
 
         if (ctx.failure() instanceof NotFoundException) {
             NotFoundException notFoundExp = (NotFoundException) ctx.failure();

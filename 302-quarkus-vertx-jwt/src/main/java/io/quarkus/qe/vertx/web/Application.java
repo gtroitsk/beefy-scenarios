@@ -88,7 +88,7 @@ public class Application {
     private void addRoute(HttpMethod method, String path, AUTH authEnabled, Handler<RoutingContext> handler) {
         Route route = this.router.route(method, path)
                 .handler(LoggerHandler.create())
-                .handler(CorsHandler.create("*"));
+                .handler(CorsHandler.create().addOriginWithRegex(".*"));
 
         if (method.equals(HttpMethod.POST) || method.equals(HttpMethod.PUT))
             route.handler(BodyHandler.create());

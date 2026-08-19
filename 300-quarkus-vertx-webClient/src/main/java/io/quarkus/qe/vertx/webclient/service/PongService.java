@@ -6,9 +6,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
-import io.vertx.mutiny.ext.web.client.HttpResponse;
 import io.vertx.mutiny.ext.web.client.WebClient;
-import io.vertx.mutiny.ext.web.client.predicate.ResponsePredicate;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,8 +33,12 @@ public class PongService {
     public Uni<String> pong() {
         return client.getAbs(basePath + "/chuck/pong")
                 .putHeader("Accept", "application/json")
-                .expect(ResponsePredicate.status(HttpURLConnection.HTTP_OK))
                 .send()
-                .map(HttpResponse::bodyAsString);
+                .onItem().transform(resp -> {
+                    if (resp.statusCode() != HttpURLConnection.HTTP_OK) {
+                        throw new RuntimeException("Unexpected HTTP status: " + resp.statusCode());
+                    }
+                    return resp.bodyAsString();
+                });
     }
 }
