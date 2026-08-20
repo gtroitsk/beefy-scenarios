@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.jboss.logging.Logger;
 
 import jakarta.persistence.AttributeConverter;
-
 import tools.jackson.databind.ObjectMapper;
 
 class MapStringConverter implements AttributeConverter<Map<String, String>, String> {
@@ -17,7 +16,7 @@ class MapStringConverter implements AttributeConverter<Map<String, String>, Stri
 
     @Override
     public String convertToDatabaseColumn(Map<String, String> attribute) {
-            return objectMapper.writeValueAsString(attribute);
+        return objectMapper.writeValueAsString(attribute);
     }
 
     @Override
