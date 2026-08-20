@@ -31,8 +31,6 @@ import io.vertx.mutiny.sqlclient.Pool;
 import io.vertx.mutiny.sqlclient.RowSet;
 
 import jakarta.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @QuarkusTest
 @TestProfile(PostgresqlTestProfile.class)

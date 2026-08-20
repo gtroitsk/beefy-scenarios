@@ -187,6 +187,7 @@
                     <groups>java.,javax.,org.,com.,io.</groups>
                     <staticGroups>*</staticGroups>
                     <removeUnused>true</removeUnused>
+                    <compliance>${maven.compiler.source}</compliance>
                 </configuration>
                 <executions>
                     <execution>

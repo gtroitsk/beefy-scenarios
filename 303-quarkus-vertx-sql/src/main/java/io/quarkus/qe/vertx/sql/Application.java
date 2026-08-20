@@ -3,10 +3,8 @@ package io.quarkus.qe.vertx.sql;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.jackson.databind.ObjectMapper;
 
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.qe.vertx.sql.services.DbPoolService;
@@ -21,6 +19,7 @@ import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import tools.jackson.databind.ObjectMapper;
 
 /** Application is used as a main class in order to setup some global configuration */
 @ApplicationScoped
