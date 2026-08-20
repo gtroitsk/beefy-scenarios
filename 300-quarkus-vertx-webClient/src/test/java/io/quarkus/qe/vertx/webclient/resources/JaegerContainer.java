@@ -5,7 +5,7 @@ import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 
 public class JaegerContainer extends GenericContainer<JaegerContainer> {
     private static final String COLLECTOR_OTLP_ENABLED = "COLLECTOR_OTLP_ENABLED";
-    private static final int OLTP_PORT = 4317;
+    private static final int OLTP_PORT = 4318;
     private static final int TRACE_PORT = 16686;
 
     public JaegerContainer() {
