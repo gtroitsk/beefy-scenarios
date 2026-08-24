@@ -135,7 +135,7 @@ jobs:
 
           MODULES_ARG="${CHANGED// /,}"
           mvn -am -fae -V -B --no-transfer-progress -s .github/mvn-settings.xml -fae -pl $MODULES_ARG clean verify -Dnative \
-            -Dquarkus.native.container-build=true -Dquarkus.native.native-image-xmx=8g \
+            -Dquarkus.native.container-build=true -Dquarkus.native.native-image-xmx=9g \
             -Dquarkus.native.builder-image=quay.io/quarkus/${{ matrix.image }}
       - name: Zip Artifacts
         if: failure()
